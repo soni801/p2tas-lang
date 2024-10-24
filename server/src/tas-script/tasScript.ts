@@ -58,8 +58,9 @@ export class TASScript {
 
             switch (state) {
                 case ParserState.Version:
+                    // Make sure a valid version is provided
                     this.expectText("Expected version", "version");
-                    this.scriptVersion = this.expectNumber("Invalid version", 1, 2, 3, 4, 5, 6, 7) ?? 7;
+                    this.scriptVersion = this.expectNumber("Invalid version", 1, 2, 3, 4, 5, 6, 7, 8) ?? 8;
                     this.expectCount("Ignored parameters", 2);
 
                     this.lines.set(currentLine, new ScriptLine(currentLineText, 0, false, LineType.Version, [], this.tokens[this.lineIndex]));
@@ -124,7 +125,7 @@ export class TASScript {
                     if (token === undefined) break;
 
                     if (token.type === TokenType.String && token.text === "rngmanip") {
-                        this.expectText("Expected parameter");
+                        // Complain if there's too many parameters (2 or more)
                         this.expectCount("Ignored parameters", 2)
                     } else {
                         this.lineIndex--;
